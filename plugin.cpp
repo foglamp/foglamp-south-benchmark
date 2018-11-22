@@ -65,8 +65,6 @@ void setPluginConfig(Random *random, ConfigCategory *config)
 
 	if (config->itemExists("numAssets"))
 		random->setNumAssets(stoul(config->getValue("numAssets"), nullptr, 0));
-
-	Logger::getLogger()->info("Benchmark plugin: assetName=%s, numAssets=%ld", random->getAssetName().c_str(), random->getNumAssets());
 }
 
 /**
@@ -107,7 +105,7 @@ Random *random = (Random *)handle;
 void plugin_reconfigure(PLUGIN_HANDLE *handle, string& newConfig)
 {
 	Random *random = (Random *)handle;
-	Logger::getLogger()->info("Benchmark plugin newConfig: %s", newConfig.c_str());
+	Logger::getLogger()->info("Benchmark plugin new config: %s", newConfig.c_str());
 	
 	ConfigCategory configCategory(string("cfg"), newConfig);
 	setPluginConfig(random, &configCategory);
