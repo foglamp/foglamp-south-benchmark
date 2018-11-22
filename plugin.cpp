@@ -53,25 +53,32 @@ PLUGIN_INFORMATION *plugin_info()
 }
 
 /**
+ * Set plugin config into plugin handle
+ */
+void setPluginConfig(Random *random, ConfigCategory *config)
+{
+	if (!random || !config) 
+		return;
+	
+	if (config->itemExists("asset"))
+		random->setAssetName(config->getValue("asset"));
+
+	if (config->itemExists("numAssets"))
+		random->setNumAssets(stoul(config->getValue("numAssets"), nullptr, 0));
+}
+
+/**
  * Initialise the plugin, called to get the plugin handle
  */
 PLUGIN_HANDLE plugin_init(ConfigCategory *config)
 {
 Random *random = new Random();
-	if (config->itemExists("asset"))
-	{
-		random->setAssetName(config->getValue("asset"));
-	}
-	else
-	{
-		random->setAssetName("Random");
-	}
-
-	if (config->itemExists("numAssets"))
-		random->setNumAssets(stoul(config->getValue("numAssets"), nullptr, 0));
-	else
-		random->setNumAssets(1);
-
+	random->setAssetName("Random");
+	random->setNumAssets(1);
+	
+	Logger::getLogger()->info("Benchmark plugin config: %s", config->toJSON().c_str());
+	setPluginConfig(random, config);
+	
 	return (PLUGIN_HANDLE)random;
 }
 
@@ -97,6 +104,11 @@ Random *random = (Random *)handle;
  */
 void plugin_reconfigure(PLUGIN_HANDLE *handle, string& newConfig)
 {
+	Random *random = (Random *)handle;
+	Logger::getLogger()->info("Benchmark plugin new config: %s", newConfig.c_str());
+	
+	ConfigCategory configCategory(string("cfg"), newConfig);
+	setPluginConfig(random, &configCategory);
 }
 
 /**
