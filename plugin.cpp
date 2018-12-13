@@ -16,6 +16,7 @@
 #include <logger.h>
 #include <plugin_exception.h>
 #include <config_category.h>
+#include <reading_set.h>
 
 using namespace std;
 
@@ -40,7 +41,7 @@ static PLUGIN_INFORMATION info = {
 	"1.0.0",                  // Version
 	0,    			  // Flags
 	PLUGIN_TYPE_SOUTH,        // Type
-	"1.0.0",                  // Interface version
+	"2.0.0",                  // Interface version
 	CONFIG                    // Default configuration
 };
 
@@ -92,11 +93,18 @@ void plugin_start(PLUGIN_HANDLE *handle)
 /**
  * Poll for a plugin reading
  */
-Reading plugin_poll(PLUGIN_HANDLE *handle)
+ReadingSet* plugin_poll(PLUGIN_HANDLE *handle)
 {
 Random *random = (Random *)handle;
 
-	return random->takeReading();
+	vector<Reading *> vec;
+	for (int i=0; i<2; i++)
+	{
+		Reading *rdng = new Reading(random->takeReading());
+		vec.push_back(rdng);
+	}
+	ReadingSet *set = new ReadingSet(&vec);
+	return set;
 }
 
 /**
