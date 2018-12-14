@@ -93,18 +93,17 @@ void plugin_start(PLUGIN_HANDLE *handle)
 /**
  * Poll for a plugin reading
  */
-ReadingSet* plugin_poll(PLUGIN_HANDLE *handle)
+vector<Reading *>* plugin_poll(PLUGIN_HANDLE *handle)
 {
 Random *random = (Random *)handle;
 
-	vector<Reading *> vec;
+	vector<Reading *> *vec = new vector<Reading *>;
 	for (int i=0; i<2; i++)
 	{
 		Reading *rdng = new Reading(random->takeReading());
-		vec.push_back(rdng);
+		vec->push_back(rdng);
 	}
-	ReadingSet *set = new ReadingSet(&vec);
-	return set;
+	return vec;
 }
 
 /**
