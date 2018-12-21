@@ -20,7 +20,7 @@
 using namespace std;
 
 #define PLUGIN_NAME "Benchmark"
-#define CONFIG	"{\"plugin\" : { \"description\" : \"" PLUGIN_NAME " C south plugin\", " \
+#define CONFIG	"{\"plugin\" : { \"description\" : \"" PLUGIN_NAME "Simulated data generation for benchmark tests\", " \
 			"\"type\" : \"string\", \"default\" : \"" PLUGIN_NAME "\", \"readonly\" : \"true\" }, " \
 		"\"numAssets\" : { \"description\" : \"Number of unique assets to simulate\", " \
 			"\"type\" : \"string\", \"default\" : \"1\", \"order\": \"2\", \"displayName\": \"Number Of Assets\" }, " \
