@@ -20,12 +20,12 @@
 using namespace std;
 
 #define PLUGIN_NAME "Benchmark"
-#define CONFIG	"{\"plugin\" : { \"description\" : \"" PLUGIN_NAME " C south plugin\", " \
-			"\"type\" : \"string\", \"default\" : \"" PLUGIN_NAME "\" }, " \
+#define CONFIG	"{\"plugin\" : { \"description\" : \"" PLUGIN_NAME "Simulated data generation for benchmark tests\", " \
+			"\"type\" : \"string\", \"default\" : \"" PLUGIN_NAME "\", \"readonly\" : \"true\" }, " \
 		"\"numAssets\" : { \"description\" : \"Number of unique assets to simulate\", " \
-			"\"type\" : \"string\", \"default\" : \"1\" }, " \
+			"\"type\" : \"string\", \"default\" : \"1\", \"order\": \"2\", \"displayName\": \"Number Of Assets\" }, " \
 		"\"asset\" : { \"description\" : \"Asset name prefix\", " \
-			"\"type\" : \"string\", \"default\" : \"Random\" } } "
+			"\"type\" : \"string\", \"default\" : \"Random\", \"order\": \"1\", \"displayName\": \"Asset Name\" } } "
 		  
 /**
  * The Random plugin interface
