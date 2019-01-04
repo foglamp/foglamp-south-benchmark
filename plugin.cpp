@@ -104,7 +104,7 @@ Random *random = (Random *)handle;
  */
 void plugin_reconfigure(PLUGIN_HANDLE *handle, string& newConfig)
 {
-	Random *random = (Random *)handle;
+	Random *random = (Random *)*handle;
 	Logger::getLogger()->info("Benchmark plugin new config: %s", newConfig.c_str());
 	
 	ConfigCategory configCategory(string("cfg"), newConfig);
