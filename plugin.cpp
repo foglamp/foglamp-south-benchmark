@@ -16,16 +16,17 @@
 #include <logger.h>
 #include <plugin_exception.h>
 #include <config_category.h>
+#include <version.h>
 
 using namespace std;
 
 #define PLUGIN_NAME "Benchmark"
-#define CONFIG	"{\"plugin\" : { \"description\" : \"" PLUGIN_NAME " C south plugin\", " \
-			"\"type\" : \"string\", \"default\" : \"" PLUGIN_NAME "\" }, " \
+#define CONFIG	"{\"plugin\" : { \"description\" : \"Simulated data generation for " PLUGIN_NAME " tests\", " \
+			"\"type\" : \"string\", \"default\" : \"" PLUGIN_NAME "\", \"readonly\" : \"true\" }, " \
 		"\"numAssets\" : { \"description\" : \"Number of unique assets to simulate\", " \
-			"\"type\" : \"string\", \"default\" : \"1\" }, " \
+			"\"type\" : \"string\", \"default\" : \"1\", \"order\": \"2\", \"displayName\": \"Number Of Assets\" }, " \
 		"\"asset\" : { \"description\" : \"Asset name prefix\", " \
-			"\"type\" : \"string\", \"default\" : \"Random\" } } "
+			"\"type\" : \"string\", \"default\" : \"Random\", \"order\": \"1\", \"displayName\": \"Asset Name\" } } "
 		  
 /**
  * The Random plugin interface
@@ -37,7 +38,7 @@ extern "C" {
  */
 static PLUGIN_INFORMATION info = {
 	PLUGIN_NAME,              // Name
-	"1.0.0",                  // Version
+	VERSION,                  // Version
 	0,    			  // Flags
 	PLUGIN_TYPE_SOUTH,        // Type
 	"1.0.0",                  // Interface version
@@ -53,25 +54,32 @@ PLUGIN_INFORMATION *plugin_info()
 }
 
 /**
+ * Set plugin config into plugin handle
+ */
+void setPluginConfig(Random *random, ConfigCategory *config)
+{
+	if (!random || !config) 
+		return;
+	
+	if (config->itemExists("asset"))
+		random->setAssetName(config->getValue("asset"));
+
+	if (config->itemExists("numAssets"))
+		random->setNumAssets(stoul(config->getValue("numAssets"), nullptr, 0));
+}
+
+/**
  * Initialise the plugin, called to get the plugin handle
  */
 PLUGIN_HANDLE plugin_init(ConfigCategory *config)
 {
 Random *random = new Random();
-	if (config->itemExists("asset"))
-	{
-		random->setAssetName(config->getValue("asset"));
-	}
-	else
-	{
-		random->setAssetName("Random");
-	}
-
-	if (config->itemExists("numAssets"))
-		random->setNumAssets(stoul(config->getValue("numAssets"), nullptr, 0));
-	else
-		random->setNumAssets(1);
-
+	random->setAssetName("Random");
+	random->setNumAssets(1);
+	
+	Logger::getLogger()->info("Benchmark plugin config: %s", config->toJSON().c_str());
+	setPluginConfig(random, config);
+	
 	return (PLUGIN_HANDLE)random;
 }
 
@@ -97,6 +105,11 @@ Random *random = (Random *)handle;
  */
 void plugin_reconfigure(PLUGIN_HANDLE *handle, string& newConfig)
 {
+	Random *random = (Random *)*handle;
+	Logger::getLogger()->info("Benchmark plugin new config: %s", newConfig.c_str());
+	
+	ConfigCategory configCategory(string("cfg"), newConfig);
+	setPluginConfig(random, &configCategory);
 }
 
 /**
