@@ -11,16 +11,16 @@ plugin_install_dirname=Benchmark
 requirements="foglamp"
 
 case "$arch" in
-	x86_64)
-		;;
-	armhf)
-		;;
-	aarch64)
-		;;
+    x86_64)
+            ;;
+    armv7l)
+            ;;
+    aarch64)
+            ;;
 esac
 case "$package_manager" in
-	deb)
-		;;
-	rpm)
-		;;
+    deb)
+        ;;
+    rpm)
+        ;;
 esac
