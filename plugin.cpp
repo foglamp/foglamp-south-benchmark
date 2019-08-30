@@ -21,12 +21,28 @@
 using namespace std;
 
 #define PLUGIN_NAME "Benchmark"
-#define CONFIG	"{\"plugin\" : { \"description\" : \"Simulated data generation for " PLUGIN_NAME " tests\", " \
-			"\"type\" : \"string\", \"default\" : \"" PLUGIN_NAME "\", \"readonly\" : \"true\" }, " \
-		"\"numAssets\" : { \"description\" : \"Number of unique assets to simulate\", " \
-			"\"type\" : \"string\", \"default\" : \"1\", \"order\": \"2\", \"displayName\": \"Number Of Assets\" }, " \
-		"\"asset\" : { \"description\" : \"Asset name prefix\", " \
-			"\"type\" : \"string\", \"default\" : \"Random\", \"order\": \"1\", \"displayName\": \"Asset Name\" } } "
+const char *default_config = QUOTE({
+		"plugin" : { 
+			"description" : "Simulated data generation for benchmark tests",
+			"type" : "string",
+		       	"default" : PLUGIN_NAME,
+			"readonly" : "true" },
+		"numAssets" : {
+			"description" : "Number of unique assets to simulate",
+			"type" : "integer",
+		       	"default" : "1",
+			"minimum" : "1",
+			"order": "2",
+		       	"displayName": "Number Of Assets"
+			},
+		"asset" : {
+			"description" : "Asset name prefix",
+			"type" : "string",
+			"default" : "Random",
+			"order": "1",
+			"displayName": "Asset Name"
+			}
+		});
 		  
 /**
  * The Random plugin interface
@@ -42,7 +58,7 @@ static PLUGIN_INFORMATION info = {
 	0,    			  // Flags
 	PLUGIN_TYPE_SOUTH,        // Type
 	"1.0.0",                  // Interface version
-	CONFIG                    // Default configuration
+	default_config		// Default configuration
 };
 
 /**
