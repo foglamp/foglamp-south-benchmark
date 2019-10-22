@@ -33,7 +33,8 @@ const char *default_config = QUOTE({
 		       	"default" : "1",
 			"minimum" : "1",
 			"order": "2",
-		       	"displayName": "Number Of Assets"
+		       	"displayName": "Number Of Assets",
+			"rule" : "value > 0"
 			},
 		"asset" : {
 			"description" : "Asset name prefix",
@@ -81,7 +82,7 @@ void setPluginConfig(Random *random, ConfigCategory *config)
 		random->setAssetName(config->getValue("asset"));
 
 	unsigned int nAssets = stoul(config->getValue("numAssets"), nullptr, 0);
-	if (nAssets == 0)
+	if (nAssets <= 0)
 	{
 		throw runtime_error("The value of numAssets must be greater than 0");
 	}
