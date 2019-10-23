@@ -13,7 +13,7 @@
 /**
  * Constructor for the random "sensor"
  */
-Random::Random()
+Random::Random() : m_numAssets(1)
 {
 	srand(time(0));
 	m_lastValue = rand() % 100;
