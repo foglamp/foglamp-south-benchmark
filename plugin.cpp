@@ -17,6 +17,7 @@
 #include <plugin_exception.h>
 #include <config_category.h>
 #include <version.h>
+#include <stdexcept>
 
 using namespace std;
 
